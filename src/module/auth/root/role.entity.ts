@@ -6,20 +6,6 @@ import { User } from './user.entity';
 
 @Entity()
 export class Role extends BaseEntity {
-  // swagger
-  @ApiProperty({
-    description: 'name',
-    maxLength: 100,
-  })
-
-  // validate
-  @IsString()
-  @MaxLength(100)
-
-  //entity
-  @Column('varchar', { length: 100})
-  name: string;
-
   @OneToMany(() => User, (item) => item.role)
   user: User[];
 }

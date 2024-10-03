@@ -1,13 +1,13 @@
 import { ApiProperty, PickType } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, MaxLength, ValidateNested } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { BaseEntity } from '../../../common/base/entity.base';
 import { RelationTypeBase } from 'src/common/base/class.base';
 import { Type } from 'class-transformer';
 import { Role } from './role.entity';
+import { RootEntity } from 'src/common/base/rootEntity.base';
 
 @Entity()
-export class User extends BaseEntity {
+export class User extends RootEntity {
   // swagger
   @ApiProperty({
     description: 'Code',
