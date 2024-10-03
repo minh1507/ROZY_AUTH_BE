@@ -5,16 +5,15 @@ import { SeederOptions } from 'typeorm-extension';
 
 config();
 const path: string = SysHelper.pathConfig('module', 'entity');
+console.log(path)
 
-export const mariaOption: DataSourceOptions & SeederOptions = {
-  charset: 'utf8mb4_bin',
-  type: 'mariadb',
+export const postgresOption: DataSourceOptions & SeederOptions = {
+  type: 'postgres',
   host: process.env.DATABASE_HOST,
   port: Number(process.env.DATABASE_PORT),
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  timezone: '+07:00',
   entities: [path],
   synchronize: false,
   logging: ['error'],
@@ -24,6 +23,6 @@ export const mariaOption: DataSourceOptions & SeederOptions = {
 };
 
 export const dataSource = new DataSource({
-  ...mariaOption,
+  ...postgresOption,
   migrations: ['src/database/migrations/**/*{.ts,.js}'],
 });
