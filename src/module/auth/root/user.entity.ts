@@ -4,25 +4,11 @@ import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '../../../common/base/entity.base';
 
 @Entity()
-export class Ethnic extends BaseEntity {
+export class User extends BaseEntity {
   // swagger
   @ApiProperty({
     description: 'Code',
-    maxLength: 1000,
-  })
-
-  // validate
-  @IsString()
-  @MaxLength(100)
-
-  //entity
-  @Column('varchar', { length: 1000})
-  code: string;
-
-  // swagger
-  @ApiProperty({
-    description: 'Name',
-    maxLength: 1000,
+    maxLength: 100,
   })
 
   // validate
@@ -31,5 +17,19 @@ export class Ethnic extends BaseEntity {
 
   //entity
   @Column('varchar', { length: 100})
-  name: string;
+  username: string;
+
+  // swagger
+  @ApiProperty({
+    description: 'Code',
+    maxLength: 100,
+  })
+
+  // validate
+  @IsString()
+  @MaxLength(100)
+
+  //entity
+  @Column('varchar', { length: 100})
+  password: string;
 }
