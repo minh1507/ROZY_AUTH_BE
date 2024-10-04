@@ -5,7 +5,6 @@ import { SeederOptions } from 'typeorm-extension';
 
 config();
 const path: string = SysHelper.pathConfig('module', 'entity');
-console.log(path)
 
 export const postgresOption: DataSourceOptions & SeederOptions = {
   type: 'postgres',
