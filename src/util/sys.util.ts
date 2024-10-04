@@ -3,7 +3,7 @@ import { randomBytes } from 'crypto';
 
 export default class SysHelper {
   static pathConfig = (path: string, type: 'entity' | 'schemas'): string => {
-    return join(__dirname, '..', '..', 'src', path, `/**/*.${type}{.ts,.js}`);
+    return join(__dirname, '..', '..', path, `/**/*.${type}{.ts,.js}`);
   };
 
   static prefix = (path: string): any => {
