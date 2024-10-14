@@ -1,3 +1,4 @@
 export enum TagEnum{
-    AUTH="Auth"
+    AUTH="Auth",
+    CATEGORY="Category"
 }

@@ -3,18 +3,25 @@ import {
   Controller,
   Post,
 } from '@nestjs/common';
-import { ApiQuery, ApiTags } from '@nestjs/swagger';
+import { ApiTags } from '@nestjs/swagger';
 import { TagEnum } from 'src/common/enum/tag.enum';
+import { AuthDto } from '../dto/auth.dto';
+import { AuthService } from '../service/auth.service';
 
 @Controller("auth")
 @ApiTags(TagEnum.AUTH)
 export class AuthController {
   constructor(
-    // private readonly vehicleCategoryService: VehicleCategoryService
+    private readonly authService: AuthService
   ) { }
 
   @Post()
-  create(@Body() createVehicleCategoryDto: CreateVehicleCategoryDto) {
-    return this.vehicleCategoryService.create(createVehicleCategoryDto);
+  register(@Body() request: AuthDto) {
+    return this.authService.register(request);
+  }
+
+  @Post()
+  login(@Body() request: AuthDto) {
+    return this.authService.login(request);
   }
 }

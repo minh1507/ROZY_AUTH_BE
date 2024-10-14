@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   INestApplication,
   NestApplicationOptions,
   ValidationPipe,
@@ -12,6 +13,7 @@ import 'reflect-metadata';
 import { AppModule } from '../app.module';
 import { consola } from 'consola';
 import { HttpExceptionFilter } from 'src/common/filter/http-exception.filter';
+import { CustomValidationPipe } from 'src/common/pipe/custom.pipe';
 
 interface Init {
   port: string;
@@ -33,6 +35,18 @@ class Main {
     transform: true,
     transformOptions: { enableImplicitConversion: true },
     forbidNonWhitelisted: false,
+    // exceptionFactory: (errors) => {
+    //   return new BadRequestException(
+    //     errors.map((error) => {
+    //       const errorType =
+    //         error.constraints != null
+    //           ? error.constraints[Object.keys(error.constraints)[Object.keys(error.constraints).length - 1]]
+    //           : 'failed';
+              
+    //       return errorType;
+    //     }),
+    //   );
+    // },
   };
   private configSwaggerB = {
     swaggerOptions: {
@@ -52,7 +66,7 @@ class Main {
 
   pipe = async (app: INestApplication): Promise<void> => {
     try {
-      app.useGlobalPipes(new ValidationPipe(this.validationConfig));
+      app.useGlobalPipes(new CustomValidationPipe());
       consola.success(' Pipe');
     } catch (error) {
       consola.log(error);

@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  ah-be:
+    container_name: ah_be
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./.env
+    environment:
+      TZ: Asia/Saigon
+    ports:
+      - 4600:4600
+    networks:
+      - local
+
+networks:
+  local:
+    external: true

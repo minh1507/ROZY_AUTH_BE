@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { postgresOption } from './config/data-source.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth/auth.module';
+import { CategoryModule } from './module/category/category.module';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { AuthModule } from './module/auth/auth.module';
     TypeOrmModule.forRootAsync({
       useFactory: async () => postgresOption,
     }),
-    AuthModule
+    AuthModule,
+    CategoryModule
   ],
   controllers: [],
   providers: [

@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
-import { User } from '../schemas/user.entity';
+import { User } from '../../user/schemas/user.entity';
+import { AuthDto } from '../dto/auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -11,12 +12,14 @@ export class AuthService {
   ) {}
 
   async register(
-    createAcademicDegreeDto: CreateAcademicDegreeDto,
-  ): Promise<ResponseCreated<AcademicDegree>> {
-    await this.checkExist(['name', 'code'], createAcademicDegreeDto);
+    request: AuthDto,
+  ) {
+    return 1
+  }
 
-    const academicDegree: AcademicDegree = await this.repository.save(createAcademicDegreeDto);
-
-    return new ResponseCreated(academicDegree);
+  async login(
+    request: AuthDto,
+  ) {
+    return 1
   }
 }
