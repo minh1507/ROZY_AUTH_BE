@@ -119,7 +119,7 @@ class Main {
     app.useGlobalFilters(new HttpExceptionFilter());
     const init = this.onInit(app, configService);
 
-    console.clear();
+    // console.clear();
     consola.start(' Booting server');
 
     await this.pipe(app);

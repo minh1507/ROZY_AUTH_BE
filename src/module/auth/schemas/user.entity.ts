@@ -1,9 +1,9 @@
 import { IsNotEmpty, IsString, MaxLength, ValidateNested } from 'class-validator';
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
-import { RelationTypeBase } from 'src/common/base/class.base';
+import { RelationTypeBase } from '../../../common/base/class.base';
 import { Type } from 'class-transformer';
 import { Role } from './role.entity';
-import { RootEntity } from 'src/common/base/rootEntity.base';
+import { RootEntity } from '../../../common/base/rootEntity.base';
 import { ApiProperty, PickType } from '@nestjs/swagger';
 
 @Entity()

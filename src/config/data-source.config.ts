@@ -1,10 +1,9 @@
 import { config } from 'dotenv';
-import SysHelper from 'src/util/sys.util';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
+import { join } from 'path';
 
 config();
-const path: string = SysHelper.pathConfig('module', 'entity');
 
 export const postgresOption: DataSourceOptions & SeederOptions = {
   type: 'postgres',
@@ -13,7 +12,7 @@ export const postgresOption: DataSourceOptions & SeederOptions = {
   username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  entities: [path],
+  entities: [join(__dirname, '..', 'module', `/**/*.entity{.ts,.js}`)],
   synchronize: false,
   logging: ['error'],
   seeds: ['src/database/seeds/**/main.seed{.ts,.js}'],
