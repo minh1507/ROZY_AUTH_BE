@@ -15,12 +15,12 @@ export class AuthController {
     private readonly authService: AuthService
   ) { }
 
-  @Post()
+  @Post('/register')
   register(@Body() request: AuthDto) {
     return this.authService.register(request);
   }
 
-  @Post()
+  @Post('/login')
   login(@Body() request: AuthDto) {
     return this.authService.login(request);
   }
