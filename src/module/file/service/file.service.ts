@@ -16,10 +16,12 @@ export class FileService {
   async upload(file: Express.Multer.File) {
     const key = await this.minioService.createFile(file, true, 'file');
 
-    this.fileRepository.save({
+    const saveFile = await this.fileRepository.save({
       file: key,
       originName: this.minioService.originalName(file.originalname),
       mimetype: file.mimetype,
     });
+
+    return saveFile
   }
 }

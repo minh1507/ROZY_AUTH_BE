@@ -1,5 +1,6 @@
 export enum TagEnum{
     AUTH="Auth",
     CATEGORY="Category",
-    FILE="File"
+    FILE="File",
+    PRODUCT="Product"
 }

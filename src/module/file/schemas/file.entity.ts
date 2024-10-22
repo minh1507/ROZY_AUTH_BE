@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { RootEntity } from 'src/common/base/rootEntity.base';
 import { ApiProperty } from '@nestjs/swagger';
 

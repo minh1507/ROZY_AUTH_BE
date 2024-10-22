@@ -24,7 +24,7 @@ export class FileController {
     @Body() payload: FileDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    await this.fileService.upload(file);
-    SuccessResponse.base();
+    const data = await this.fileService.upload(file)
+    return SuccessResponse.response(data);
   }
 }
