@@ -16,7 +16,10 @@ export class CategoryService {
   async list(request: ListCategoryDto){
     return await this.categoryRepository.find({
       skip: request.offset,
-      take: request.limit
+      take: request.limit,
+      order: {
+        id: "DESC"
+      }
     })
   }
 
