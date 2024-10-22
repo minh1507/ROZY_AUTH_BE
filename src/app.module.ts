@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth/auth.module';
 import { CategoryModule } from './module/category/category.module';
 import { MinioModule } from './module/minio/minio.module';
+import { FileModule } from './module/file/file.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { MinioModule } from './module/minio/minio.module';
     }),
     AuthModule,
     CategoryModule,
-    MinioModule
+    MinioModule,
+    FileModule
   ],
   controllers: [],
   providers: [
