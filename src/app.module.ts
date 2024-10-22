@@ -6,6 +6,7 @@ import { postgresOption } from './config/data-source.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './module/auth/auth.module';
 import { CategoryModule } from './module/category/category.module';
+import { MinioModule } from './module/minio/minio.module';
 
 @Module({
   imports: [
@@ -17,7 +18,8 @@ import { CategoryModule } from './module/category/category.module';
       useFactory: async () => postgresOption,
     }),
     AuthModule,
-    CategoryModule
+    CategoryModule,
+    MinioModule
   ],
   controllers: [],
   providers: [
