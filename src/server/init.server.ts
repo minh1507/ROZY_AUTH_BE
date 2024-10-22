@@ -122,13 +122,6 @@ class Main {
 
     const configService = app.get(ConfigService);
     const swagger = String(configService.get('SWAGGER'));
-    const ips = String(configService.get('IP')).split(',');
-
-    app.enableCors({
-      origin: ips,
-      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-      credentials: true,
-    });
 
     app.useGlobalFilters(new HttpExceptionFilter());
     const init = this.onInit(app, configService);
