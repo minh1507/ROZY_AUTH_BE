@@ -24,4 +24,8 @@ export class FileService {
 
     return saveFile
   }
+
+  async url(id: string) {
+    return await this.minioService.findUrlFile(id, 'file')
+  }
 }

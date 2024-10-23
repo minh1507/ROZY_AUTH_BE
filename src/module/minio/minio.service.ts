@@ -31,7 +31,7 @@ export class MinioService {
    * @returns {string} Name in utf-8.
    */
   originalName = (name: string): string => {
-    return Buffer.from(name, 'latin1').toString('utf8');
+    return Buffer.from(name, 'latin1').toString('utf8').trim();
   };
 
   /**
@@ -132,7 +132,7 @@ export class MinioService {
    * @returns {Promise<string>} string.
    */
   async findUrlFile(fileName: string, path?: string): Promise<string> {
-    return await this.minioClient.presignedUrl('GET', this.bucket, this.key(fileName, path));
+    return await this.minioClient.presignedUrl('GET', this.bucket, this.key(fileName, path), 36000);
   }
 
   /**
@@ -235,7 +235,7 @@ export class MinioService {
   }
 
   private key = (name: string, path?: string): string => {
-    return path ? `/${path}/${name}.xlsx` : name;
+    return path ? `${path}/${name}` : name;
   };
 
   private keyAny = (name: string, path?: string): string => {

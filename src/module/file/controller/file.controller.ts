@@ -1,6 +1,8 @@
 import {
   Body,
   Controller,
+  Get,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -25,6 +27,14 @@ export class FileController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const data = await this.fileService.upload(file)
+    return SuccessResponse.response(data);
+  }
+
+  @Get(':id')
+  async url(
+    @Param('id') id: string
+  ) {
+    const data = await this.fileService.url(id)
     return SuccessResponse.response(data);
   }
 }
