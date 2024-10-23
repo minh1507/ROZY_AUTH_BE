@@ -6,11 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { TagEnum } from 'src/common/enum/tag.enum';
 import { SuccessResponse } from 'src/common/response/success.response';
-import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
+import { CreateProductDto, ListProductDto, UpdateProductDto } from '../dto/product.dto';
 import { ProductService } from '../service/product.service';
 
 @Controller('product')
@@ -19,8 +20,8 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async list() {
-    const data = await this.productService.list();
+  async list(@Query() request: ListProductDto) {
+    const data = await this.productService.list(request);
     return SuccessResponse.response(data);
   }
 

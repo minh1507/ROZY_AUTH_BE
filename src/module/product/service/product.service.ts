@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CustomBadRequestException } from 'src/common/exeption/bad-request.exeption';
 import { Product } from '../schemas/product.entity';
-import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
+import { CreateProductDto, ListProductDto, UpdateProductDto } from '../dto/product.dto';
 import { File } from 'src/module/file/schemas/file.entity';
 import { Category } from 'src/module/category/schemas/category.entity';
 
@@ -20,8 +20,15 @@ export class ProductService {
     protected categoryRepository: Repository<Category>,
   ) {}
 
-  async list() {
+  async list(request: ListProductDto) {
+    let condition = {}
+
+    if(request.categoryId)  condition['category'] = {
+      id: request.categoryId
+    }
+
     return await this.productRepository.find({
+      where: condition,
       relations: {
         file: true
       },
@@ -40,6 +47,7 @@ export class ProductService {
   }
 
   async create(request: CreateProductDto) {
+    console.log(request)
     const file = await this.fileRepository.findOne({
       where: {
         id: request.fileId as number,
