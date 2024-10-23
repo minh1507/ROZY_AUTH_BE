@@ -1,8 +1,9 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { RootEntity } from 'src/common/base/rootEntity.base';
 import { IsNotEmpty, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { File } from 'src/module/file/schemas/file.entity';
+import { Category } from 'src/module/category/schemas/category.entity';
 
 @Entity()
 export class Product extends RootEntity {
@@ -71,4 +72,8 @@ export class Product extends RootEntity {
   @OneToOne(() => File)
   @JoinColumn()
   file: File;
+
+  @ManyToOne(() => Category, (item) => item.product)
+  @JoinColumn()
+  category: Category;
 }

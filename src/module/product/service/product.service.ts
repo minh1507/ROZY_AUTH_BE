@@ -5,6 +5,7 @@ import { CustomBadRequestException } from 'src/common/exeption/bad-request.exept
 import { Product } from '../schemas/product.entity';
 import { CreateProductDto, UpdateProductDto } from '../dto/product.dto';
 import { File } from 'src/module/file/schemas/file.entity';
+import { Category } from 'src/module/category/schemas/category.entity';
 
 @Injectable()
 export class ProductService {
@@ -14,6 +15,9 @@ export class ProductService {
 
     @InjectRepository(File)
     protected fileRepository: Repository<File>,
+
+    @InjectRepository(Category)
+    protected categoryRepository: Repository<Category>,
   ) {}
 
   async list() {
@@ -42,12 +46,19 @@ export class ProductService {
       },
     });
 
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id: request.categoryId as number
+      }
+    })
+
     this.productRepository.save({
       title: request.title,
       oldPrice: request.oldPrice,
       newPrice: request.newPrice,
       description: request.description,
       file: file,
+      category: category
     } as Product);
   }
 
@@ -62,12 +73,19 @@ export class ProductService {
       return new CustomBadRequestException('Sản phẩm không tồn tại');
     }
 
+    const category = await this.categoryRepository.findOne({
+      where: {
+        id: request.categoryId as number
+      }
+    })
+
     product.title = request.title as string;
     product.oldPrice = request.oldPrice as number;
     product.newPrice = request.newPrice as number;
     product.description = request.description
       ? (request.description as string)
       : product.description;
+    product.category = category as Category
 
     this.productRepository.save(product);
   }
