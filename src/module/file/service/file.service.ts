@@ -28,4 +28,8 @@ export class FileService {
   async url(id: string) {
     return await this.minioService.findUrlFile(id, 'file')
   }
+
+  async findAll(){
+    return await this.fileRepository.find();
+  }
 }

@@ -37,4 +37,10 @@ export class FileController {
     const data = await this.fileService.url(id)
     return SuccessResponse.response(data);
   }
+
+  @Get()
+  async findAll() {
+    const data = await this.fileService.findAll()
+    return SuccessResponse.response(data);
+  }
 }
