@@ -14,7 +14,6 @@ import { AppModule } from '../app.module';
 import { consola } from 'consola';
 import { HttpExceptionFilter } from 'src/common/filter/http-exception.filter';
 import { CustomValidationPipe } from 'src/common/pipe/custom.pipe';
-import { readFileSync } from 'fs';
 
 interface Init {
   port: string;
@@ -26,10 +25,6 @@ interface Init {
 class Main {
   private flag: number = 0;
   private config: NestApplicationOptions = {
-    httpsOptions: {
-      key: readFileSync(__dirname + "/nginx-selfsigned.key"),
-      cert: readFileSync(__dirname + "/nginx-selfsigned.crt"),
-    },
     cors: true,
     logger: ['error', 'warn', 'verbose', 'debug', 'fatal'],
     snapshot: true,
