@@ -17,7 +17,7 @@ export class FileService {
     const key = await this.minioService.createFile(file, true, 'file');
 
     const saveFile = await this.fileRepository.save({
-      file: key,
+      file: key.trim(),
       originName: this.minioService.originalName(file.originalname),
       mimetype: file.mimetype,
     });
