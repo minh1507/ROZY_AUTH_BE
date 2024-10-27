@@ -128,7 +128,7 @@ class Main {
     app.enableCors({
       origin: true,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
-      credentials: false, 
+      credentials: true, 
       allowedHeaders: 'Content-Type, Accept',
     });
 
