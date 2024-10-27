@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -44,7 +45,7 @@ export class FileController {
     return SuccessResponse.response(data);
   }
 
-  @Get(':id')
+  @Delete(':id')
   async delete(
     @Param('id') id: number
   ) {
