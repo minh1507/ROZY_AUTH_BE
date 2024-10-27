@@ -30,6 +30,7 @@ export class ProductService {
     return await this.productRepository.find({
       where: condition,
       relations: {
+        category: true,
         file: true
       },
       order: {
@@ -47,7 +48,6 @@ export class ProductService {
   }
 
   async create(request: CreateProductDto) {
-    console.log(request)
     const file = await this.fileRepository.findOne({
       where: {
         id: request.fileId as number,
