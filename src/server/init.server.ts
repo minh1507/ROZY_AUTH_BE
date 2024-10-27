@@ -125,12 +125,12 @@ class Main {
   run = async (): Promise<void> => {
     const app = await NestFactory.create(AppModule, this.config);
 
-    app.enableCors({
-      origin: true,
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
-      credentials: true, 
-      allowedHeaders: 'Content-Type, Accept, Authorization',
-    });
+    // app.enableCors({
+    //   origin: true,
+    //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+    //   credentials: true, 
+    //   allowedHeaders: 'Content-Type, Accept, Authorization',
+    // });
 
     const configService = app.get(ConfigService);
     const swagger = String(configService.get('SWAGGER'));
