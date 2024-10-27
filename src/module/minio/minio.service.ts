@@ -8,6 +8,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { BucketItem } from 'minio';
 import { Readable as ReadableStream } from 'node:stream';
 import { Readable } from 'stream';
+import * as https from 'https';
 
 @Injectable()
 export class MinioService {
@@ -19,9 +20,10 @@ export class MinioService {
     this.minioClient = new Minio.Client({
       endPoint: String(this.configService.get<string>('MINIO_END_POINT')),
       port: Number(this.configService.get<string>('MINIO_PORT')),
-      useSSL: false,
+      useSSL: true,
       accessKey: String(this.configService.get<string>('MINIO_ACCESS_KEY')),
       secretKey: String(this.configService.get<string>('MINIO_SECRET_KEY')),
+      transportAgent: new https.Agent({ rejectUnauthorized: false })
     });
   }
 
