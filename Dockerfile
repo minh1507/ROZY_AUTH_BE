@@ -1,5 +1,5 @@
 FROM node:18.13.0
-WORKDIR /home/backends/ahd
+WORKDIR /home/backends/ahdsd
 COPY package*.json ./
 RUN npm install
 COPY .. .
