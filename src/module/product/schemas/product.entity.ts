@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne } from 'typeorm';
 import { RootEntity } from 'src/common/base/rootEntity.base';
-import { IsNotEmpty, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { File } from 'src/module/file/schemas/file.entity';
 import { Category } from 'src/module/category/schemas/category.entity';
@@ -57,12 +57,7 @@ export class Product extends RootEntity {
     maxLength: 1000,
     required: true
   })
-  @IsNotEmpty({
-    message: 'Mô tả không được để trống',
-  })
-  @MaxLength(1000, {
-    message: 'Mô tả không được vượt quá 1000 ký tự',
-  })
+  @IsOptional()
   @Column('varchar', {
     length: 1000,
     nullable: true,
