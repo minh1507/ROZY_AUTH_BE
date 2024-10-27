@@ -26,10 +26,10 @@ interface Init {
 class Main {
   private flag: number = 0;
   private config: NestApplicationOptions = {
-    // httpsOptions: {
-    //   key: readFileSync(__dirname + "/private-key.pem"),
-    //   cert: readFileSync(__dirname + "/certificate.crt"),
-    // },
+    httpsOptions: {
+      key: readFileSync(__dirname + "/private-key.pem"),
+      cert: readFileSync(__dirname + "/certificate.crt"),
+    },
     cors: true,
     logger: ['error', 'warn', 'verbose', 'debug', 'fatal'],
     snapshot: true,
@@ -126,10 +126,10 @@ class Main {
     const app = await NestFactory.create(AppModule, this.config);
 
     app.enableCors({
-      origin: ['http://222.255.1.152', 'https://anhoangstore.xyz'], // specify allowed origins
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // specify allowed methods
-      credentials: true, // allow cookies from other origins
-      allowedHeaders: 'Content-Type, Accept', // specify allowed headers
+      origin: ['http://222.255.1.152', 'https://anhoangstore.xyz'], 
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
+      credentials: false, 
+      allowedHeaders: 'Content-Type, Accept',
     });
 
     const configService = app.get(ConfigService);
