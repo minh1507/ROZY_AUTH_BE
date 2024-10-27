@@ -126,7 +126,7 @@ class Main {
     const app = await NestFactory.create(AppModule, this.config);
 
     app.enableCors({
-      origin: ['http://222.255.1.152', 'https://anhoangstore.xyz', 'https://anhoangstore.xyz:80', 'https://anhoangstore.xyz:443'], 
+      origin: true,
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
       credentials: false, 
       allowedHeaders: 'Content-Type, Accept',
