@@ -18,6 +18,7 @@ export const postgresOption: DataSourceOptions & SeederOptions = {
   seeds: ['src/database/seeds/**/main.seed{.ts,.js}'],
   factories: ['src/database/factories/**/main.seed{.ts,.js}'],
   logger: 'debug',
+  ssl: {rejectUnauthorized: true },
 };
 
 export const dataSource = new DataSource({
