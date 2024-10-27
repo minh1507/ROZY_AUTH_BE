@@ -26,10 +26,10 @@ interface Init {
 class Main {
   private flag: number = 0;
   private config: NestApplicationOptions = {
-    httpsOptions: {
-      key: readFileSync(__dirname + "/private-key.pem"),
-      cert: readFileSync(__dirname + "/certificate.crt"),
-    },
+    // httpsOptions: {
+    //   key: readFileSync(__dirname + "/private-key.pem"),
+    //   cert: readFileSync(__dirname + "/certificate.crt"),
+    // },
     cors: true,
     logger: ['error', 'warn', 'verbose', 'debug', 'fatal'],
     snapshot: true,
