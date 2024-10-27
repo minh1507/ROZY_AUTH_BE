@@ -43,4 +43,12 @@ export class FileController {
     const data = await this.fileService.findAll()
     return SuccessResponse.response(data);
   }
+
+  @Get(':id')
+  async delete(
+    @Param('id') id: number
+  ) {
+    await this.fileService.delete(id)
+    return SuccessResponse.base();
+  }
 }

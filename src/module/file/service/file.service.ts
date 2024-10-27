@@ -54,4 +54,8 @@ export class FileService {
 
     return newFile
   }
+
+  async delete(id: number) {
+    await this.fileRepository.delete(id)
+  }
 }
