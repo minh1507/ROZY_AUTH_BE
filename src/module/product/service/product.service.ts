@@ -41,6 +41,10 @@ export class ProductService {
 
   async detail(id: number) {
     return await this.productRepository.findOne({
+      relations: {
+        file: true,
+        category: true
+      },
       where: {
         id: id,
       },
