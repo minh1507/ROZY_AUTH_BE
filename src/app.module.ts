@@ -9,6 +9,7 @@ import { CategoryModule } from './module/category/category.module';
 import { MinioModule } from './module/minio/minio.module';
 import { FileModule } from './module/file/file.module';
 import { ProductModule } from './module/product/product.module';
+import { AnonymousModule } from './module/anonymous/anonymous.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { ProductModule } from './module/product/product.module';
     CategoryModule,
     MinioModule,
     FileModule,
-    ProductModule
+    ProductModule,
+    AnonymousModule
   ],
   controllers: [],
   providers: [
