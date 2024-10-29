@@ -20,7 +20,7 @@ export class AnonymousController {
 
     @Get()
     async list() {
-        const data = await this.anonymousService.list(request);
+        const data = await this.anonymousService.list();
         return SuccessResponse.response(data)
     }
 

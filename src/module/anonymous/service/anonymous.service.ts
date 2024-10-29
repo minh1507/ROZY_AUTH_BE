@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-// import { File } from '../schemas/file.entity';
 import { Repository } from 'typeorm';
-import { MinioService } from 'src/module/minio/minio.service';
-import { Product } from 'src/module/product/schemas/product.entity';
 import { Anonymous } from '../schemas/anonymous.entity';
 import { CreateAnonymousDto, UpdateAnonymousDto } from '../dto/anonymous.dto';
 import { CustomBadRequestException } from 'src/common/exeption/bad-request.exeption';
