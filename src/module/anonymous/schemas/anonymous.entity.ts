@@ -12,6 +12,9 @@ export class Anonymous extends RootEntity {
   @Column('varchar', { name: 'email', length: 100, nullable: true })
   email: string;
 
+  @Column('varchar', { name: 'destination', length: 1000, nullable: true })
+  destination: string;
+
   @Column('varchar', { name: 'desctiption', length: 1000, nullable: true })
   description: string;
 
