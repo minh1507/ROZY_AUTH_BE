@@ -1,11 +1,7 @@
 import {
-  BadRequestException,
   INestApplication,
   NestApplicationOptions,
-  ValidationPipe,
-  ValidationPipeOptions,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import basicAuth from 'express-basic-auth';
@@ -14,45 +10,19 @@ import { AppModule } from '../app.module';
 import { consola } from 'consola';
 import { HttpExceptionFilter } from 'src/common/filter/http-exception.filter';
 import { CustomValidationPipe } from 'src/common/pipe/custom.pipe';
-import { readFileSync } from 'fs';
-
-interface Init {
-  port: string;
-  prePort: number;
-  user: string;
-  password: string;
-}
+import { ConfigService } from 'src/module/share/config/config.service';
+import IGlobal from 'src/master/global/global.interface';
+import { LoggerService } from 'src/module/share/logger/logger.service';
 
 class Main {
   private flag: number = 0;
+
   private config: NestApplicationOptions = {
-    httpsOptions: {
-      key: readFileSync(__dirname + "/private-key.pem"),
-      cert: readFileSync(__dirname + "/certificate.crt"),
-    },
     cors: true,
     logger: ['error', 'warn', 'verbose', 'debug', 'fatal'],
     snapshot: true,
   };
-  private validationConfig: ValidationPipeOptions = {
-    disableErrorMessages: false,
-    whitelist: true,
-    transform: true,
-    transformOptions: { enableImplicitConversion: true },
-    forbidNonWhitelisted: false,
-    // exceptionFactory: (errors) => {
-    //   return new BadRequestException(
-    //     errors.map((error) => {
-    //       const errorType =
-    //         error.constraints != null
-    //           ? error.constraints[Object.keys(error.constraints)[Object.keys(error.constraints).length - 1]]
-    //           : 'failed';
-              
-    //       return errorType;
-    //     }),
-    //   );
-    // },
-  };
+
   private configSwaggerB = {
     swaggerOptions: {
       displayOperationId: true,
@@ -61,6 +31,7 @@ class Main {
     customSiteTitle: process.env.SWAGGER_TITLE,
     customCss: '.swagger-ui .topbar {display: none; }',
   };
+
   private configSwaggerA = new DocumentBuilder()
     .setTitle(String(process.env.SWAGGER_TITLE))
     .setDescription(String(process.env.SWAGGER_DESCRIPTION))
@@ -69,7 +40,7 @@ class Main {
     .addSecurityRequirements('Token')
     .build();
 
-  pipe = async (app: INestApplication): Promise<void> => {
+  private pipe = async (app: INestApplication): Promise<void> => {
     try {
       app.useGlobalPipes(new CustomValidationPipe());
       consola.success(' Pipe');
@@ -80,83 +51,85 @@ class Main {
     }
   };
 
-  swagger = async (app: INestApplication, init: Init): Promise<void> => {
-    try {
-      app.use(
-        ['/api'],
-        basicAuth({
-          challenge: true,
-          users: {
-            [init.user]: init.password,
-          },
-        }),
-      );
-      const document = SwaggerModule.createDocument(app, this.configSwaggerA);
-      SwaggerModule.setup('api', app, document, this.configSwaggerB);
-      consola.success(' Swagger');
-    } catch (error) {
-      consola.log(error);
-      consola.fail(' Swagger');
-      this.flag++;
+  private swagger = async (app: INestApplication, init: IGlobal): Promise<void> => {
+    if (init['SWAGGER.STATUS'] == "ON") {
+      try {
+        app.use(
+          ['/api'],
+          basicAuth({
+            challenge: true,
+            users: {
+              [init['SWAGGER.USER']]: init['SWAGGER.PASSWORD'],
+            },
+          }),
+        );
+        const document = SwaggerModule.createDocument(app, this.configSwaggerA);
+        SwaggerModule.setup('api', app, document, this.configSwaggerB);
+        consola.success(' Swagger');
+      } catch (error) {
+        consola.log(error);
+        consola.fail(' Swagger');
+        this.flag++;
+      }
     }
+
   };
 
-  onInit = (app: INestApplication, configService: any): Init => {
-    return {
-      port: String(configService.get('PORT' as never)),
-      prePort: 3100,
-      user: String(configService.get('SWAGGER_USER' as never)),
-      password: String(configService.get('SWAGGER_PASSWORD' as never)),
-    };
+  private onInit = async (app: INestApplication): Promise<IGlobal> => {
+    return app.get(ConfigService).getConfig()
   };
 
-  async shutdown(app) {
-    try {
-      // Perform your cleanup actions
-      await app.close();
-      consola.log('Cleanup finished. Shutting down.');
-    } catch (error) {
-      consola.error('Error during shutdown', error);
-    } finally {
-      process.exit(0);
+  private cors = async (app: INestApplication) => {
+    app.enableCors({
+      origin: true,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      credentials: true,
+      allowedHeaders: 'Content-Type, Accept, Authorization',
+    });
+  }
+
+  private startLog = async (app: INestApplication) => {
+    consola.log("\n")
+    consola.start(' Booting server');
+  }
+
+  private endLog = async (init: IGlobal) => {
+    if (!this.flag) {
+      consola.box(`Server is running on port ${init['CONFIG.PORT'] || 3100}`);
+    } else {
+      consola.error(' Config server failed');
     }
+
+    consola.info("Api: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'])
+    consola.info("Swagger: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'] + '/api')
+  }
+
+  private listener = async (app: INestApplication, init: IGlobal) => {
+    await app.listen(init['CONFIG.PORT'] || 3100, '0.0.0.0');
   }
 
   run = async (): Promise<void> => {
     const app = await NestFactory.create(AppModule, this.config);
 
-    app.enableCors({
-      origin: true,
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', 
-      credentials: true, 
-      allowedHeaders: 'Content-Type, Accept, Authorization',
-    });
+    console.clear()
 
-    const configService = app.get(ConfigService);
-    const swagger = String(configService.get('SWAGGER'));
+    app.get(LoggerService).logBigMessage()
+
+    const init = await this.onInit(app);
 
     app.useGlobalFilters(new HttpExceptionFilter());
-    const init = this.onInit(app, configService);
 
-    // console.clear();
-    consola.start(' Booting server');
+    await this.cors(app);
+
+    await this.startLog(app);
 
     await this.pipe(app);
 
-    if (swagger == 'ON') {
-      await this.swagger(app, init);
-    }
-    await app.listen(init.port || init.prePort, '0.0.0.0');
+    await this.swagger(app, init);
 
-    if (!this.flag) {
-      consola.box(`Server is running on port ${init.port || init.prePort}`);
-    } else {
-      consola.error(' Config server failed');
-    }
+    await this.listener(app, init)
 
-    process.on('SIGTERM', () => {
-      this.shutdown(app);
-    });
+    await this.endLog(init)
   };
 }
 

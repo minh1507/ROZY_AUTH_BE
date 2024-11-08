@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  ah-be:
-    container_name: ah_be_a
+  ROZY-AUTH:
+    container_name: rozy_auth
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -11,7 +11,7 @@ services:
     environment:
       TZ: Asia/Saigon
     ports:
-      - 4600:4600
+      - 6000:4600
     networks:
       - local
 
