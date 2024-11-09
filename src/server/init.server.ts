@@ -72,7 +72,6 @@ class Main {
         this.flag++;
       }
     }
-
   };
 
   private onInit = async (app: INestApplication): Promise<IGlobal> => {
