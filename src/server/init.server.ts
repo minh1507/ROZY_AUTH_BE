@@ -13,6 +13,8 @@ import { CustomValidationPipe } from 'src/common/pipe/custom.pipe';
 import { ConfigService } from 'src/module/share/config/config.service';
 import IGlobal from 'src/master/global/global.interface';
 import { LoggerService } from 'src/module/share/logger/logger.service';
+import { LoggingInterceptor } from 'src/common/interceptor/logger.interceptor';
+import { TraceIdService } from 'src/module/share/trace/trace.service';
 
 class Main {
   private flag: number = 0;
@@ -22,23 +24,6 @@ class Main {
     logger: ['error', 'warn', 'verbose', 'debug', 'fatal'],
     snapshot: true,
   };
-
-  private configSwaggerB = {
-    swaggerOptions: {
-      displayOperationId: true,
-      persistAuthorization: true,
-    },
-    customSiteTitle: process.env.SWAGGER_TITLE,
-    customCss: '.swagger-ui .topbar {display: none; }',
-  };
-
-  private configSwaggerA = new DocumentBuilder()
-    .setTitle(String(process.env.SWAGGER_TITLE))
-    .setDescription(String(process.env.SWAGGER_DESCRIPTION))
-    .setVersion('')
-    .addBearerAuth({ in: 'header', type: 'http' }, 'Token')
-    .addSecurityRequirements('Token')
-    .build();
 
   private pipe = async (app: INestApplication): Promise<void> => {
     try {
@@ -63,8 +48,27 @@ class Main {
             },
           }),
         );
-        const document = SwaggerModule.createDocument(app, this.configSwaggerA);
-        SwaggerModule.setup('api', app, document, this.configSwaggerB);
+
+        const document = SwaggerModule.createDocument(
+          app, 
+          new DocumentBuilder()
+          .setTitle(String(init['SWAGGER.TITLE']))
+          .setDescription(String(init['SWAGGER.DESCRIPTION']))
+          .setVersion('')
+          .addBearerAuth({ in: 'header', type: 'http' }, 'Token')
+          .addSecurityRequirements('Token')
+          .build()
+        );
+
+        SwaggerModule.setup('api', app, document, {
+          swaggerOptions: {
+            displayOperationId: true,
+            persistAuthorization: true,
+          },
+          customSiteTitle: init['SWAGGER.TITLE'],
+          customCss: '.swagger-ui .topbar {display: none; }',
+        });
+
         consola.success(' Swagger');
       } catch (error) {
         consola.log(error);
@@ -101,6 +105,8 @@ class Main {
 
     consola.info("Api: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'])
     consola.info("Swagger: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'] + '/api')
+
+    consola.log("");
   }
 
   private listener = async (app: INestApplication, init: IGlobal) => {
@@ -109,6 +115,10 @@ class Main {
 
   run = async (): Promise<void> => {
     const app = await NestFactory.create(AppModule, this.config);
+
+    const traceIdService = await app.resolve(TraceIdService);
+
+    app.useGlobalInterceptors(new LoggingInterceptor(traceIdService));
 
     console.clear()
 

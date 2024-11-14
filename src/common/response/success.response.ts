@@ -1,18 +1,19 @@
-export class SuccessResponse{
-    static base = () => {
-        return {
-            message: "Thao tác thành công",
-            statusCode: 200,
-            flag: true
-        }
-    }
+import { Trans } from "../trans/trans"
 
-    static response = (data: Object[] | Object | null) => {
+export class ResponseClient{
+    static base = (method: string, data: Object | Object[] | null = null, flag: Boolean = false) => {
         return {
-            message: "Thao tác thành công",
-            statusCode: 200,
+            status: {
+                code: method != 'PostMapping' ? 200 : 201,
+                success: true
+            },
+            message: {
+                success: Trans.RA_RESPONSE_SUCCESS
+            },
             data: data,
-            flag: false
+            ui: {
+                flag: flag
+            }
         }
     }
 }

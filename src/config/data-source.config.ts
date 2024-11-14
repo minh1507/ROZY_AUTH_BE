@@ -1,7 +1,7 @@
 import { join } from 'path';
 import IGlobal from 'src/master/global/global.interface';
 import { ConfigService } from 'src/module/share/config/config.service';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 
 export async function getPostgresOptions(configService: ConfigService): Promise<DataSourceOptions & SeederOptions> {
@@ -18,15 +18,7 @@ export async function getPostgresOptions(configService: ConfigService): Promise<
     synchronize: false,
     logging: ['error'],
     seeds: ['src/database/seeds/**/main.seed{.ts,.js}'],
-    factories: ['src/database/factories/**/main.seed{.ts,.js}'],
     logger: 'debug',
   };
 }
 
-export async function createDataSource(configService: ConfigService): Promise<DataSource> {
-  const postgresOptions = await getPostgresOptions(configService);
-  return new DataSource({
-    ...postgresOptions,
-    migrations: ['src/database/migrations/**/*{.ts,.js}'],
-  });
-}

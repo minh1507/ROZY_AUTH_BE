@@ -1,5 +1,7 @@
 import { join } from 'path';
 import { randomBytes } from 'crypto';
+import { Vi } from 'src/common/trans/vi';
+import { En } from 'src/common/trans/en';
 
 export default class SysHelper {
   static pathConfig = (path: string, type: 'entity' | 'schemas'): string => {
@@ -17,5 +19,13 @@ export default class SysHelper {
     const randomBytesBuffer = randomBytes(4);
     const randomNumber = randomBytesBuffer.readUInt32BE(0);
     return randomNumber % max;
+  }
+
+  static getLang(lang: string) {
+    if (lang === "en") {
+      return En;
+    } else {
+      return Vi;
+    }
   }
 }
