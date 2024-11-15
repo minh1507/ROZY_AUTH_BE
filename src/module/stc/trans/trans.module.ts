@@ -8,4 +8,4 @@ import { TransService } from './service/trans.service';
   providers: [TransService],
   exports: [TransService]
 })
-export class HealthModule {}
+export class TransModule {}
