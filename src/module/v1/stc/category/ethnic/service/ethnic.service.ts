@@ -3,7 +3,7 @@ import { LoggerService } from "src/module/share/logger/logger.service";
 import SysHelper from "src/util/sys.util";
 
 @Injectable()
-export class TransService{
+export class EthnicService{
     constructor(
         private readonly logger: LoggerService
     ){}

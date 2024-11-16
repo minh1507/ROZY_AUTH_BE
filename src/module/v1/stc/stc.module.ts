@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TransModule } from './trans/trans.module';
+import { EthnicModule } from './category/ethnic/ethnic.module';
 
 @Module({
   imports: [
-    TransModule
+    EthnicModule
   ],
 })
 export class STCModule {}
