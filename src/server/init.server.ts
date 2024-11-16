@@ -15,6 +15,8 @@ import IGlobal from 'src/master/global/global.interface';
 import { LoggerService } from 'src/module/share/logger/logger.service';
 import { LoggingInterceptor } from 'src/common/interceptor/logger.interceptor';
 import { TraceIdService } from 'src/module/share/trace/trace.service';
+import { createDataSource } from 'src/config/data-source.config';
+import {generateMigrations, runMigrations} from 'src/command/migration.command'
 
 class Main {
   private flag: number = 0;
@@ -119,6 +121,14 @@ class Main {
     const traceIdService = await app.resolve(TraceIdService);
 
     app.useGlobalInterceptors(new LoggingInterceptor(traceIdService));
+
+    const dataSource = await createDataSource(app.get(ConfigService));
+
+    await dataSource.initialize();
+
+    await generateMigrations(dataSource);
+
+    await runMigrations(dataSource);
 
     console.clear()
 

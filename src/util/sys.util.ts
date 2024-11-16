@@ -2,6 +2,7 @@ import { join } from 'path';
 import { randomBytes } from 'crypto';
 import { Vi } from 'src/common/trans/vi';
 import { En } from 'src/common/trans/en';
+import * as path from 'path';
 
 export default class SysHelper {
   static pathConfig = (path: string, type: 'entity' | 'schemas'): string => {
@@ -27,5 +28,25 @@ export default class SysHelper {
     } else {
       return Vi;
     }
+  }
+
+  static getPath(dir: string): string {
+    const absolutePath = path.resolve(dir);
+
+    const keyword = 'module/';
+    const index = absolutePath.indexOf(keyword);
+
+    if (index === -1) {
+      throw new Error('"module/" not found in the provided path');
+    }
+
+    const relativePath = absolutePath
+      .substring(index + keyword.length)
+      .replace(/\\/g, '/');
+
+    const pathSegments = relativePath.split('/');
+    pathSegments.pop(); 
+
+    return pathSegments.join('/');
   }
 }

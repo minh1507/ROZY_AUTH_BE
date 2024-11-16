@@ -1,13 +1,11 @@
 import { Module } from '@nestjs/common';
 import { SharedModule } from './module/share/shared.module';
-import { STSModule } from './module/server-to-server/sts.module';
-import { STCModule } from './module/server-to-client/stc.module';
+import { V1Module } from './module/v1/v1.module';
 
 @Module({
   imports: [
     SharedModule,
-    STSModule,
-    STCModule
+    V1Module
   ],
 })
 export class AppModule {}
