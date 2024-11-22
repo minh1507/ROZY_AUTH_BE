@@ -115,20 +115,22 @@ class Main {
     await app.listen(init['CONFIG.PORT'] || 3100, '0.0.0.0');
   }
 
+  private migration = async (init: IGlobal) => {
+    if(Boolean(init['DATABASE.MIGRATION'])){
+      await runMigrations()
+
+      await generateMigrations();
+
+      consola.log("")
+    }
+  }
+
   run = async (): Promise<void> => {
     const app = await NestFactory.create(AppModule, this.config);
 
     const traceIdService = await app.resolve(TraceIdService);
 
     app.useGlobalInterceptors(new LoggingInterceptor(traceIdService));
-
-    const dataSource = await createDataSource(app.get(ConfigService));
-
-    await dataSource.initialize();
-
-    await generateMigrations(dataSource);
-
-    await runMigrations(dataSource);
 
     console.clear()
 
@@ -149,6 +151,8 @@ class Main {
     await this.listener(app, init)
 
     await this.endLog(init)
+
+    await this.migration(init);
   };
 }
 

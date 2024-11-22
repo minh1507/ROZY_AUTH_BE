@@ -9,6 +9,8 @@ import { config } from 'dotenv';
 
 config();
 
+const MIGRATION = join(__dirname, '..', 'database', 'migrations', `/**/*{.ts,.js}`) 
+
 const V1 = join(__dirname, '..', 'module', 'v1', `/**/*.entity{.ts,.js}`) 
 
 export async function getPostgresOptions(configService: ConfigService): Promise<DataSourceOptions & SeederOptions> {
@@ -27,6 +29,7 @@ export async function getPostgresOptions(configService: ConfigService): Promise<
     synchronize: false,
     logging: ['error'],
     seeds: ['src/database/seeds/**/main.seed{.ts,.js}'],
+    migrations: [MIGRATION],
     logger: 'debug',
   };
 }
@@ -35,7 +38,6 @@ export async function createDataSource(configService: ConfigService): Promise<Da
   const postgresOptions = await getPostgresOptions(configService);
   return new DataSource({
     ...postgresOptions,
-    migrations: ['src/database/migrations/**/*{.ts,.js}'],
   });
 }
 
