@@ -10,6 +10,7 @@ import { config } from 'dotenv';
 config();
 
 const MIGRATION = join(__dirname, '..', 'database', 'migrations', `/**/*{.ts,.js}`) 
+const SEED = join(__dirname, '..', 'database', 'seeds', `/**/*{.ts,.js}`) 
 
 const V1 = join(__dirname, '..', 'module', 'v1', `/**/*.entity{.ts,.js}`) 
 
@@ -28,7 +29,7 @@ export async function getPostgresOptions(configService: ConfigService): Promise<
     ],
     synchronize: false,
     logging: ['error'],
-    seeds: ['src/database/seeds/**/main.seed{.ts,.js}'],
+    seeds: [SEED],
     migrations: [MIGRATION],
     logger: 'debug',
   };

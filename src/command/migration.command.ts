@@ -46,3 +46,20 @@ export async function runMigrations(): Promise<void> {
     consola.error('Error run migrations:', error);
   }
 }
+
+
+export async function runSeed(): Promise<void> {
+  try {
+    const command = `npm run seed`;
+
+    consola.start(`Running seed command: ${command}`);
+
+    const { stdout, stderr } = await execAsync(command);
+
+    if (stderr) throw new Error(stderr);
+
+    consola.success(`Seed run successfully:\n${stdout}`);
+  } catch (error) {
+    consola.error('Error run seeds:', error);
+  }
+}

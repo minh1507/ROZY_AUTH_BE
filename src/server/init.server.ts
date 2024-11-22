@@ -16,7 +16,7 @@ import { LoggerService } from 'src/module/share/logger/logger.service';
 import { LoggingInterceptor } from 'src/common/interceptor/logger.interceptor';
 import { TraceIdService } from 'src/module/share/trace/trace.service';
 import { createDataSource } from 'src/config/data-source.config';
-import {generateMigrations, runMigrations} from 'src/command/migration.command'
+import {generateMigrations, runMigrations, runSeed} from 'src/command/migration.command'
 
 class Main {
   private flag: number = 0;
@@ -120,6 +120,8 @@ class Main {
       await runMigrations()
 
       await generateMigrations();
+
+      await runSeed();
 
       consola.log("")
     }
