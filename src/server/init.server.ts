@@ -116,7 +116,7 @@ class Main {
   }
 
   private migration = async (init: IGlobal) => {
-    if(Boolean(init['DATABASE.MIGRATION'])){
+    if(init['DATABASE.MIGRATION'] == 'true'){
       await runMigrations()
 
       await generateMigrations();
