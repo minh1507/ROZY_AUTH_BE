@@ -1,4 +1,4 @@
-import { Ethnic } from 'src/module/v1/stc/category/ethnic/entity/ethnic.entity';
+import { Ethnic } from 'src/module/v1/stc/category/ethnic/ethnic.entity';
 import { DataSource } from 'typeorm';
 import { Seeder } from 'typeorm-extension';
 

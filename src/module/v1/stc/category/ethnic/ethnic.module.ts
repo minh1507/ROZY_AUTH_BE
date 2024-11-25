@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EthnicService } from './service/ethnic.service';
-import { EthnicController } from './controller/ethnic.controller';
+import { EthnicService } from './ethnic.service';
+import { EthnicController } from './ethnic.controller';
 
 @Module({
   imports: [],

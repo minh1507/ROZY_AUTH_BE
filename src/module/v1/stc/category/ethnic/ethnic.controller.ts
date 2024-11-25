@@ -4,7 +4,7 @@ import { ResponseClient } from "src/common/response/success.response";
 import { LoggerService } from "src/module/share/logger/logger.service";
 import { TagEnum } from "src/common/enum/tag.enum";
 import SysHelper from "src/util/sys.util";
-import { EthnicService } from "../service/ethnic.service";
+import { EthnicService } from "./ethnic.service";
 
 @Controller(SysHelper.getPath(__dirname))
 @ApiTags(TagEnum.ETHNIC)
