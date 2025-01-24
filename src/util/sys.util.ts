@@ -23,7 +23,7 @@ export default class SysHelper {
   }
 
   static getLang(lang: string) {
-    if (lang === "en") {
+    if (lang === 'en') {
       return En;
     } else {
       return Vi;
@@ -33,7 +33,7 @@ export default class SysHelper {
   static getPath(dir: string): string {
     const absolutePath = path.resolve(dir);
 
-    const keyword = 'module/';
+    const keyword = 'module';
     const index = absolutePath.indexOf(keyword);
 
     if (index === -1) {
@@ -45,7 +45,7 @@ export default class SysHelper {
       .replace(/\\/g, '/');
 
     const pathSegments = relativePath.split('/');
-    pathSegments.pop(); 
+    pathSegments.pop();
 
     return pathSegments.join('/');
   }

@@ -4,10 +4,8 @@ import { TraceIdService } from '../trace/trace.service';
 
 @Injectable()
 export class LoggerService extends Logger {
-  constructor(
-    private readonly traceIdService: TraceIdService
-  ) {
-    super(); 
+  constructor(private readonly traceIdService: TraceIdService) {
+    super();
   }
 
   async logBigMessage() {
@@ -29,7 +27,7 @@ export class LoggerService extends Logger {
     return this.traceIdService.getTraceId();
   }
 
-  error(message: string,) {
+  error(message: string) {
     const traceId = this.getTraceId();
     const formattedMessage = `[${traceId}] ${message}`;
 

@@ -5,7 +5,7 @@ import { VaultService } from '../vault/vault.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { getPostgresOptions } from 'src/config/data-source.config';
 
-@Global() 
+@Global()
 @Module({
   imports: [
     VaultModule,
@@ -18,6 +18,6 @@ import { getPostgresOptions } from 'src/config/data-source.config';
     }),
   ],
   providers: [ConfigService, VaultService],
-  exports: [ConfigService], 
+  exports: [ConfigService],
 })
 export class ConfigModule {}

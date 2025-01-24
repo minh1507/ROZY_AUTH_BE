@@ -3,8 +3,8 @@ import * as Minio from 'minio';
 import { MinioService } from './minio.service';
 import { ConfigService } from '../config/config.service';
 import IGlobal from 'src/master/global/global.interface';
-
-@Global() 
+import { Agent } from 'https';
+@Global()
 @Module({})
 export class MinioModule {
   static forRoot(): DynamicModule {
@@ -23,7 +23,9 @@ export class MinioModule {
               useSSL: true,
               accessKey: String(config['MINIO.ACCESS_KEY']),
               secretKey: String(config['MINIO.SECRET_KEY']),
-              transportAgent: new (require('https').Agent)({ rejectUnauthorized: false }),
+              transportAgent: new Agent({
+                rejectUnauthorized: false,
+              }),
             });
           },
         },

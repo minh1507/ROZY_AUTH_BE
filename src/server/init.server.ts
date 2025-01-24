@@ -1,7 +1,4 @@
-import {
-  INestApplication,
-  NestApplicationOptions,
-} from '@nestjs/common';
+import { INestApplication, NestApplicationOptions } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import basicAuth from 'express-basic-auth';
@@ -15,8 +12,11 @@ import IGlobal from 'src/master/global/global.interface';
 import { LoggerService } from 'src/module/share/logger/logger.service';
 import { LoggingInterceptor } from 'src/common/interceptor/logger.interceptor';
 import { TraceIdService } from 'src/module/share/trace/trace.service';
-import { createDataSource } from 'src/config/data-source.config';
-import {generateMigrations, runMigrations, runSeed} from 'src/command/migration.command'
+import {
+  generateMigrations,
+  runMigrations,
+  runSeed,
+} from 'src/command/migration.command';
 
 class Main {
   private flag: number = 0;
@@ -38,8 +38,11 @@ class Main {
     }
   };
 
-  private swagger = async (app: INestApplication, init: IGlobal): Promise<void> => {
-    if (init['SWAGGER.STATUS'] == "ON") {
+  private swagger = async (
+    app: INestApplication,
+    init: IGlobal,
+  ): Promise<void> => {
+    if (init['SWAGGER.STATUS'] == 'ON') {
       try {
         app.use(
           ['/api'],
@@ -52,14 +55,14 @@ class Main {
         );
 
         const document = SwaggerModule.createDocument(
-          app, 
+          app,
           new DocumentBuilder()
-          .setTitle(String(init['SWAGGER.TITLE']))
-          .setDescription(String(init['SWAGGER.DESCRIPTION']))
-          .setVersion('')
-          .addBearerAuth({ in: 'header', type: 'http' }, 'Token')
-          .addSecurityRequirements('Token')
-          .build()
+            .setTitle(String(init['SWAGGER.TITLE']))
+            .setDescription(String(init['SWAGGER.DESCRIPTION']))
+            .setVersion('')
+            .addBearerAuth({ in: 'header', type: 'http' }, 'Token')
+            .addSecurityRequirements('Token')
+            .build(),
         );
 
         SwaggerModule.setup('api', app, document, {
@@ -81,7 +84,7 @@ class Main {
   };
 
   private onInit = async (app: INestApplication): Promise<IGlobal> => {
-    return app.get(ConfigService).getConfig()
+    return app.get(ConfigService).getConfig();
   };
 
   private cors = async (app: INestApplication) => {
@@ -91,12 +94,12 @@ class Main {
       credentials: true,
       allowedHeaders: 'Content-Type, Accept, Authorization',
     });
-  }
+  };
 
-  private startLog = async (app: INestApplication) => {
-    consola.log("\n")
+  private startLog = async () => {
+    consola.log('\n');
     consola.start(' Booting server');
-  }
+  };
 
   private endLog = async (init: IGlobal) => {
     if (!this.flag) {
@@ -105,27 +108,35 @@ class Main {
       consola.error(' Config server failed');
     }
 
-    consola.info("Api: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'])
-    consola.info("Swagger: http://" + init['CONFIG.DOMAIN'] + ":" + init['CONFIG.PORT'] + '/api')
+    consola.info(
+      'Api: http://' + init['CONFIG.DOMAIN'] + ':' + init['CONFIG.PORT'],
+    );
+    consola.info(
+      'Swagger: http://' +
+        init['CONFIG.DOMAIN'] +
+        ':' +
+        init['CONFIG.PORT'] +
+        '/api',
+    );
 
-    consola.log("");
-  }
+    consola.log('');
+  };
 
   private listener = async (app: INestApplication, init: IGlobal) => {
     await app.listen(init['CONFIG.PORT'] || 3100, '0.0.0.0');
-  }
+  };
 
   private migration = async (init: IGlobal) => {
-    if(init['DATABASE.MIGRATION'] == 'true'){
-      await runMigrations()
+    if (init['DATABASE.MIGRATION'] == 'true') {
+      await runMigrations();
 
       await generateMigrations();
 
       await runSeed();
 
-      consola.log("")
+      consola.log('');
     }
-  }
+  };
 
   run = async (): Promise<void> => {
     const app = await NestFactory.create(AppModule, this.config);
@@ -134,9 +145,9 @@ class Main {
 
     app.useGlobalInterceptors(new LoggingInterceptor(traceIdService));
 
-    console.clear()
+    console.clear();
 
-    app.get(LoggerService).logBigMessage()
+    app.get(LoggerService).logBigMessage();
 
     const init = await this.onInit(app);
 
@@ -144,15 +155,15 @@ class Main {
 
     await this.cors(app);
 
-    await this.startLog(app);
+    await this.startLog();
 
     await this.pipe(app);
 
     await this.swagger(app, init);
 
-    await this.listener(app, init)
+    await this.listener(app, init);
 
-    await this.endLog(init)
+    await this.endLog(init);
 
     await this.migration(init);
   };

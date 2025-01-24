@@ -2,7 +2,7 @@ import { Global, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import NodeVault from 'node-vault';
 
-@Global() 
+@Global()
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -15,13 +15,12 @@ import NodeVault from 'node-vault';
       provide: 'VAULT_CLIENT',
       useFactory: async (configService: ConfigService) => {
         return NodeVault({
-          endpoint: configService.get("MAIN.DOMAIN"),  
-          token: configService.get("MAIN.SECRET"),  
+          endpoint: configService.get('MAIN.DOMAIN'),
+          token: configService.get('MAIN.SECRET'),
         });
       },
-      inject: [ConfigService], 
+      inject: [ConfigService],
     },
-
   ],
   exports: ['VAULT_CLIENT'],
 })

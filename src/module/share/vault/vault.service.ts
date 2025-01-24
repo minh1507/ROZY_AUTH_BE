@@ -3,17 +3,17 @@ import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class VaultService {
-  private configService: ConfigService
+  private configService: ConfigService;
 
-  constructor(
-    @Inject('VAULT_CLIENT') private readonly vaultClient: any,
-  ) {
-    this.configService = new ConfigService()
+  constructor(@Inject('VAULT_CLIENT') private readonly vaultClient: any) {
+    this.configService = new ConfigService();
   }
 
   async getSecret(): Promise<any> {
     try {
-      const secret = await this.vaultClient.read(this.configService.get("MAIN.PATH"));
+      const secret = await this.vaultClient.read(
+        this.configService.get('MAIN.PATH'),
+      );
       const secretData = secret.data.data;
 
       return secretData;

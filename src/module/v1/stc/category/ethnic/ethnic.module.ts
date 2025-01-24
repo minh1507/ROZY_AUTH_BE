@@ -6,6 +6,6 @@ import { EthnicController } from './ethnic.controller';
   imports: [],
   controllers: [EthnicController],
   providers: [EthnicService],
-  exports: [EthnicService]
+  exports: [EthnicService],
 })
 export class EthnicModule {}

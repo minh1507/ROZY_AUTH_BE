@@ -1,8 +1,8 @@
 {
-  "name": "auth",
+  "name": "efin",
   "version": "0.0.1",
-  "description": "ROZY AUTH",
-  "author": "kokuro",
+  "description": "EFIN",
+  "author": "anhdd",
   "private": true,
   "license": "UNLICENSED",
   "scripts": {

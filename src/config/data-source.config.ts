@@ -9,12 +9,20 @@ import { config } from 'dotenv';
 
 config();
 
-const MIGRATION = join(__dirname, '..', 'database', 'migrations', `/**/*{.ts,.js}`) 
-const SEED = join(__dirname, '..', 'database', 'seeds', `/**/*{.ts,.js}`) 
+const MIGRATION = join(
+  __dirname,
+  '..',
+  'database',
+  'migrations',
+  `/**/*{.ts,.js}`,
+);
+const SEED = join(__dirname, '..', 'database', 'seeds', `main.seed{.ts,.js}`);
 
-const V1 = join(__dirname, '..', 'module', 'v1', `/**/*.entity{.ts,.js}`) 
+const V1 = join(__dirname, '..', 'module', 'v1', `/**/*.entity{.ts,.js}`);
 
-export async function getPostgresOptions(configService: ConfigService): Promise<DataSourceOptions & SeederOptions> {
+export async function getPostgresOptions(
+  configService: ConfigService,
+): Promise<DataSourceOptions & SeederOptions> {
   const dbConfig: IGlobal = await configService.getConfig();
 
   return {
@@ -24,9 +32,7 @@ export async function getPostgresOptions(configService: ConfigService): Promise<
     username: dbConfig['DATABASE.USER'],
     password: dbConfig['DATABASE.PASSWORD'],
     database: dbConfig['DATABASE.NAME'],
-    entities: [
-      V1,
-    ],
+    entities: [V1],
     synchronize: false,
     logging: ['error'],
     seeds: [SEED],
@@ -35,7 +41,9 @@ export async function getPostgresOptions(configService: ConfigService): Promise<
   };
 }
 
-export async function createDataSource(configService: ConfigService): Promise<DataSource> {
+export async function createDataSource(
+  configService: ConfigService,
+): Promise<DataSource> {
   const postgresOptions = await getPostgresOptions(configService);
   return new DataSource({
     ...postgresOptions,
@@ -43,10 +51,12 @@ export async function createDataSource(configService: ConfigService): Promise<Da
 }
 
 async function initializeDataSource() {
-  const vault = new VaultService(NodeVault({
-    endpoint: process.env["MAIN.DOMAIN"],  
-    token: process.env["MAIN.SECRET"],  
-  }))
+  const vault = new VaultService(
+    NodeVault({
+      endpoint: process.env['MAIN.DOMAIN'],
+      token: process.env['MAIN.SECRET'],
+    }),
+  );
 
   const configService = new ConfigService(vault);
 

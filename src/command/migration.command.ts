@@ -9,17 +9,22 @@ export async function generateMigrations(): Promise<void> {
     const checkCommand = `npm run typeorm -- schema:log`;
     consola.start(`Checking for schema changes with command: ${checkCommand}`);
 
-    const { stdout: schemaLogOutput, stderr: schemaLogError } = await execAsync(checkCommand);
+    const { stdout: schemaLogOutput, stderr: schemaLogError } =
+      await execAsync(checkCommand);
 
     if (schemaLogError) throw new Error(schemaLogError);
 
-    if (schemaLogOutput.includes("up to date")) {
-      consola.info('No schema changes detected. Skipping migration generation.');
+    if (schemaLogOutput.includes('up to date')) {
+      consola.info(
+        'No schema changes detected. Skipping migration generation.',
+      );
       return;
     }
 
     const generateCommand = `npm run typeorm -- migration:generate src/database/migrations/auto`;
-    consola.start(`Schema changes detected. Running migration generation command: ${generateCommand}`);
+    consola.start(
+      `Schema changes detected. Running migration generation command: ${generateCommand}`,
+    );
 
     const { stdout, stderr } = await execAsync(generateCommand);
 
@@ -46,7 +51,6 @@ export async function runMigrations(): Promise<void> {
     consola.error('Error run migrations:', error);
   }
 }
-
 
 export async function runSeed(): Promise<void> {
   try {

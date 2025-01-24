@@ -10,10 +10,10 @@ export abstract class BaseEntity extends RootEntity {
     maxLength: 25,
   })
   @IsNotEmpty({
-    message: "Mã không được để trống"
+    message: 'Mã không được để trống',
   })
   @MaxLength(25, {
-    message: "Mã không được vượt quá 25 ký tự"
+    message: 'Mã không được vượt quá 25 ký tự',
   })
   @Column('varchar', {
     length: 25,
@@ -27,10 +27,10 @@ export abstract class BaseEntity extends RootEntity {
     maxLength: 100,
   })
   @IsNotEmpty({
-    message: "Mã không được để trống"
+    message: 'Mã không được để trống',
   })
   @MaxLength(100, {
-    message: "Tên không được vượt quá 100 ký tự"
+    message: 'Tên không được vượt quá 100 ký tự',
   })
   @Column('varchar', {
     length: 100,

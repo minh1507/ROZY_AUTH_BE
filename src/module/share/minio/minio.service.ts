@@ -21,7 +21,7 @@ export class MinioService {
   }
 
   private async initialize() {
-    const config = await this.configService.getConfig() as IGlobal;
+    const config = (await this.configService.getConfig()) as IGlobal;
     this.bucket = config['MINIO.BUCKET'];
   }
 
@@ -68,13 +68,27 @@ export class MinioService {
     return fileName;
   }
 
-  async uploadStream(objectName: string, stream: Readable, size: number, path: string): Promise<void> {
-    await this.minioClient.putObject(this.bucket, path + '/' + objectName, stream, size);
+  async uploadStream(
+    objectName: string,
+    stream: Readable,
+    size: number,
+    path: string,
+  ): Promise<void> {
+    await this.minioClient.putObject(
+      this.bucket,
+      path + '/' + objectName,
+      stream,
+      size,
+    );
   }
 
   async createFileWithBuffer(buffer: Buffer, path?: string): Promise<string> {
     const fileName: string = `${uuidV4()}.xlsx`;
-    await this.minioClient.putObject(this.bucket, this.keyAny(fileName, path), buffer);
+    await this.minioClient.putObject(
+      this.bucket,
+      this.keyAny(fileName, path),
+      buffer,
+    );
     return fileName;
   }
 
@@ -108,22 +122,25 @@ export class MinioService {
    * @param {boolean} buffer is buffer or bucket.
    * @returns {Promise<Buffer[] | BucketItem[]>} buffer or bucket item.
    */
-  async findAllFile(buffer: boolean, path?: string): Promise<Buffer[] | BucketItem[]> {
-    const list: BucketItem[] = [];
-    await new Promise((resolve, reject) => {
-      this.minioClient
-        .listObjectsV2(this.bucket, path, true)
-        .on('data', (data: BucketItem) => {
-          list.push(data);
-        })
-        .on('error', reject)
-        .on('end', resolve);
-    });
-    if (buffer) {
-      return await this.findAllFileInBuffer(list, path);
-    }
-    return list;
-  }
+  // async findAllFile(
+  //   buffer: boolean,
+  //   path?: string,
+  // ): Promise<Buffer[] | BucketItem[]> {
+  //   const list: BucketItem[] = [];
+  //   await new Promise((resolve, reject) => {
+  //     this.minioClient
+  //       .listObjectsV2(this.bucket, path, true)
+  //       .on('data', (data: BucketItem) => {
+  //         list.push(data);
+  //       })
+  //       .on('error', reject)
+  //       .on('end', resolve);
+  //   });
+  //   if (buffer) {
+  //     return await this.findAllFileInBuffer(list, path);
+  //   }
+  //   return list;
+  // }
 
   /**
    * Get file install by url.
@@ -132,7 +149,12 @@ export class MinioService {
    * @returns {Promise<string>} string.
    */
   async findUrlFile(fileName: string, path?: string): Promise<string> {
-    return await this.minioClient.presignedUrl('GET', this.bucket, this.key(fileName, path), 36000);
+    return await this.minioClient.presignedUrl(
+      'GET',
+      this.bucket,
+      this.key(fileName, path),
+      36000,
+    );
   }
 
   /**
@@ -160,7 +182,10 @@ export class MinioService {
    * @returns {Promise<void>} string.
    */
   async removeFile(fileName: string, path?: string): Promise<void> {
-    await this.minioClient.removeObject(this.bucket, this.keyAny(fileName, path));
+    await this.minioClient.removeObject(
+      this.bucket,
+      this.keyAny(fileName, path),
+    );
   }
 
   /**
@@ -207,7 +232,10 @@ export class MinioService {
     return this.minioClient.getObject(this.bucket, `${fileName}.docx`);
   }
 
-  async findOneFileAny(fileName: string, path?: string): Promise<ReadableStream> {
+  async findOneFileAny(
+    fileName: string,
+    path?: string,
+  ): Promise<ReadableStream> {
     return this.minioClient.getObject(this.bucket, this.keyAny(fileName, path));
   }
 
@@ -230,7 +258,11 @@ export class MinioService {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-assignment
       const objectName = obj.name;
       const destinationPath = path.join(folderPath, objectName);
-      await this.minioClient.fGetObject(this.bucket, objectName, destinationPath);
+      await this.minioClient.fGetObject(
+        this.bucket,
+        objectName,
+        destinationPath,
+      );
     }
   }
 
@@ -242,14 +274,17 @@ export class MinioService {
     return path ? `/${path}/${name}` : name;
   };
 
-  private async findAllFileInBuffer(arr: BucketItem[], path?: string): Promise<Buffer[]> {
-    const list: Buffer[] = [];
-    for (let i = 0; i < arr.length; i++) {
-      const nameArr: string[] = arr[i].name!.split('/');
-      const name = nameArr[nameArr.length - 1].split('.')[0];
+  // private async findAllFileInBuffer(
+  //   arr: BucketItem[],
+  //   path?: string,
+  // ): Promise<Buffer[]> {
+  //   const list: Buffer[] = [];
+  //   for (let i = 0; i < arr.length; i++) {
+  //     const nameArr: string[] = arr[i].name!.split('/');
+  //     const name = nameArr[nameArr.length - 1].split('.')[0];
 
-      // list.push(await this.findOneFile(name, path));
-    }
-    return list;
-  }
+  //     list.push(await this.findOneFile(name, path));
+  //   }
+  //   return list;
+  // }
 }

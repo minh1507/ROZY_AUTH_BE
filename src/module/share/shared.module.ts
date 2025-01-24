@@ -5,11 +5,6 @@ import { MinioModule } from './minio/minio.module';
 import { LoggerModule } from './logger/logger.module';
 
 @Module({
-  imports: [
-    ConfigModule,
-    VaultModule,
-    MinioModule,
-    LoggerModule
-  ],
+  imports: [ConfigModule, VaultModule, MinioModule, LoggerModule],
 })
 export class SharedModule {}
