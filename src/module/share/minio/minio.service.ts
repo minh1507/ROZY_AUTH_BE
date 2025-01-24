@@ -3,7 +3,6 @@ import * as Minio from 'minio';
 import * as fs from 'fs';
 import * as path from 'path';
 import { v4 as uuidV4 } from 'uuid';
-import { BucketItem } from 'minio';
 import { Readable as ReadableStream } from 'node:stream';
 import { Readable } from 'stream';
 import { ConfigService } from '../config/config.service';

@@ -38,6 +38,15 @@ export abstract class BaseEntity extends RootEntity {
   })
   name: string;
 
-  @Column('boolean', { default: false })
-  isFreeze?: boolean;
+  @Column('boolean', { default: true })
+  displayIconCreate?: boolean;
+
+  @Column('boolean', { default: true })
+  displayIconUpdate?: boolean;
+
+  @Column('boolean', { default: true })
+  displayIconDelete?: boolean;
+
+  @Column('boolean', { default: true })
+  displayIconDetail?: boolean;
 }

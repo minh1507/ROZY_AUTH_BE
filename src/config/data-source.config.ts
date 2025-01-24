@@ -6,6 +6,7 @@ import { VaultService } from 'src/module/share/vault/vault.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { SeederOptions } from 'typeorm-extension';
 import { config } from 'dotenv';
+import MainSeeder from '../database/seeds/main.seed';
 
 config();
 
@@ -16,8 +17,6 @@ const MIGRATION = join(
   'migrations',
   `/**/*{.ts,.js}`,
 );
-const SEED = join(__dirname, '..', 'database', 'seeds', `main.seed{.ts,.js}`);
-
 const V1 = join(__dirname, '..', 'module', 'v1', `/**/*.entity{.ts,.js}`);
 
 export async function getPostgresOptions(
@@ -35,7 +34,7 @@ export async function getPostgresOptions(
     entities: [V1],
     synchronize: false,
     logging: ['error'],
-    seeds: [SEED],
+    seeds: [MainSeeder],
     migrations: [MIGRATION],
     logger: 'debug',
   };
