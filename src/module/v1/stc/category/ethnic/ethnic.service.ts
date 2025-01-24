@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/module/share/logger/logger.service';
-import SysHelper from 'src/util/sys.util';
+import { EthnicRepository } from './ethnic.repository';
+import { Ethnic } from './ethnic.entity';
 
 @Injectable()
 export class EthnicService {
-  constructor(private readonly logger: LoggerService) {}
+  constructor(
+    private readonly logger: LoggerService,
+    private readonly ethnicRepository: EthnicRepository,
+  ) {}
 
-  public get = (lang: string): object => {
-    const language = SysHelper.getLang(lang);
+  public find = async (): Promise<Ethnic[]> => {
+    this.logger.trace(`[SERVICE] Start find all ethnic`);
 
-    const languageObj = Object.fromEntries(Object.entries(language));
+    const result = await this.ethnicRepository.find();
 
-    this.logger.trace(`Get lang: ${lang} success`);
-
-    return languageObj;
+    return result;
   };
 }

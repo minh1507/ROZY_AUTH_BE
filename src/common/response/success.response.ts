@@ -2,13 +2,13 @@ import { Trans } from '../trans/trans';
 
 export class ResponseClient {
   static base = (
-    method: string,
+    method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
     data: object | object[] | null = null,
     flag: boolean = false,
   ) => {
     return {
       status: {
-        code: method != 'PostMapping' ? 200 : 201,
+        code: method != 'POST' ? 200 : 201,
         success: true,
       },
       message: {

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ResponseClient } from 'src/common/response/success.response';
 import { LoggerService } from 'src/module/share/logger/logger.service';
@@ -15,10 +15,12 @@ export class EthnicController {
     private readonly logger: LoggerService,
   ) {}
 
-  @Get(':lang')
-  public get(@Param('lang') lang: string) {
-    this.logger.trace(`Get trans with lang: ${lang}`);
+  @Get()
+  public async find() {
+    this.logger.trace(`[CONTROLLER] Start find all ethnic`);
 
-    return ResponseClient.base('', this.ethnicService.get(lang));
+    const result = await this.ethnicService.find();
+
+    return ResponseClient.base('GET', result);
   }
 }
