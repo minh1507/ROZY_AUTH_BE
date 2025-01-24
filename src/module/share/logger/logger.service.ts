@@ -12,7 +12,7 @@ export class LoggerService extends Logger {
     const figlet = (await import('figlet')).default;
     const chalk = (await import('chalk')).default;
 
-    const rozyAscii = figlet.textSync('ROZY', {
+    const rozyAscii = figlet.textSync('EFIN', {
       font: 'Isometric1',
       horizontalLayout: 'default',
       verticalLayout: 'default',

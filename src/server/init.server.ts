@@ -15,7 +15,6 @@ import { TraceIdService } from 'src/module/share/trace/trace.service';
 import {
   generateMigrations,
   runMigrations,
-  runSeed,
 } from 'src/command/migration.command';
 
 class Main {
@@ -131,8 +130,6 @@ class Main {
       await runMigrations();
 
       await generateMigrations();
-
-      await runSeed();
 
       consola.log('');
     }

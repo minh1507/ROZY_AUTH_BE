@@ -1,5 +1,5 @@
 import { Ethnic } from 'src/module/v1/stc/category/ethnic/ethnic.entity';
-import { DataSource } from 'typeorm';
+import { DataSource, FindOptionsWhere } from 'typeorm';
 import { Seeder } from 'typeorm-extension';
 
 export default class EthnicSeeder implements Seeder {
@@ -11,7 +11,7 @@ export default class EthnicSeeder implements Seeder {
       displayIconDelete: false,
       displayIconDetail: false,
       displayIconUpdate: false,
-    });
+    } as FindOptionsWhere<Ethnic>);
 
     await reporitory.save([
       ETHNIC_KINH,
