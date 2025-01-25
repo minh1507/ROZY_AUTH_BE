@@ -17,6 +17,8 @@ export class EthnicService {
 
     const result = await this.ethnicRepository.find(param);
 
+    this.logger.trace(`[SERVICE] Found ${result.content.length} ethnics`);
+
     return result;
   };
 }
