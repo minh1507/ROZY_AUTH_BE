@@ -10,16 +10,15 @@ export class CustomBadRequestException extends HttpException {
 
     super(
       {
-        message: {
-          failed: message,
-        },
-        error: 'Validate failed',
         status: {
           code: HttpStatus.BAD_REQUEST,
           success: false,
         },
+        message: {
+          failed: message,
+        },
         ui: {
-          flag: false,
+          flag: true,
         },
         trace: {
           id: logger.getTraceId(),

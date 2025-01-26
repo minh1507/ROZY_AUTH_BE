@@ -4,7 +4,7 @@ export class ResponseClient {
   static base = (
     method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
     data: object | object[] | null = null,
-    flag: boolean = false,
+    flag: boolean = true,
   ) => {
     return {
       status: {
@@ -16,7 +16,7 @@ export class ResponseClient {
       },
       data: data,
       ui: {
-        flag: flag,
+        flag: method == 'GET' ? false : flag,
       },
     };
   };
