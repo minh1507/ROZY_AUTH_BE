@@ -2,8 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { LoggerService } from 'src/module/share/logger/logger.service';
 import { EthnicRepository } from './ethnic.repository';
 import { Ethnic } from './ethnic.entity';
-import { FindDto } from './ethnic.dto';
+import { CreateEthnicDto, FindDto } from './ethnic.dto';
 import { PaginationResult } from 'src/module/v1/base/dto.base';
+import { CustomBadRequestException } from 'src/common/exeption/bad-request.exeption';
 
 @Injectable()
 export class EthnicService {
@@ -20,5 +21,20 @@ export class EthnicService {
     this.logger.trace(`[SERVICE] Found ${result.content.length} ethnics`);
 
     return result;
+  };
+
+  public create = async (param: CreateEthnicDto): Promise<void> => {
+    this.logger.trace(`[SERVICE] Start create ethnic`);
+
+    const isExist = await this.ethnicRepository.exist(param.code);
+
+    if (isExist)
+      throw new CustomBadRequestException('Code has existed', this.logger);
+
+    const result = await this.ethnicRepository.create(param);
+
+    this.logger.trace(
+      `[SERVICE] Create ethnic with id=${result.id} sucessfully`,
+    );
   };
 }

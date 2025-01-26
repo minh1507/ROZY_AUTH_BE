@@ -3,7 +3,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { IsNumber } from 'class-validator';
+import { IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export abstract class RootEntity {
@@ -11,7 +11,7 @@ export abstract class RootEntity {
     description: 'Id',
     minimum: 1,
   })
-  @IsNumber({})
+  @IsString()
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

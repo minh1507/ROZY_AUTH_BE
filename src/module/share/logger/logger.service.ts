@@ -23,7 +23,7 @@ export class LoggerService extends Logger {
     consola.log(styledMessage);
   }
 
-  private getTraceId(): string {
+  public getTraceId(): string {
     return this.traceIdService.getTraceId();
   }
 

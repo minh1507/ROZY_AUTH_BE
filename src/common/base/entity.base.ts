@@ -9,15 +9,12 @@ export abstract class BaseEntity extends RootEntity {
     example: 'Mã 1',
     maxLength: 25,
   })
-  @IsNotEmpty({
-    message: 'Mã không được để trống',
-  })
-  @MaxLength(25, {
-    message: 'Mã không được vượt quá 25 ký tự',
-  })
+  @IsNotEmpty()
+  @MaxLength(25)
   @Column('varchar', {
     length: 25,
     nullable: false,
+    unique: true,
   })
   code: string;
 
@@ -26,12 +23,8 @@ export abstract class BaseEntity extends RootEntity {
     example: 'Tên 1',
     maxLength: 100,
   })
-  @IsNotEmpty({
-    message: 'Mã không được để trống',
-  })
-  @MaxLength(100, {
-    message: 'Tên không được vượt quá 100 ký tự',
-  })
+  @IsNotEmpty()
+  @MaxLength(100)
   @Column('varchar', {
     length: 100,
     nullable: false,
