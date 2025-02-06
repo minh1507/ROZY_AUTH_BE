@@ -14,6 +14,7 @@ export class EthnicController {
   constructor(
     private readonly ethnicService: EthnicService,
     private readonly logger: LoggerService,
+    private readonly response: ResponseClient,
   ) {}
 
   @Get()
@@ -25,7 +26,7 @@ export class EthnicController {
 
     const result = await this.ethnicService.find(param);
 
-    return ResponseClient.base('GET', result);
+    return this.response.base('GET', result);
   }
 
   @Post()
@@ -42,6 +43,6 @@ export class EthnicController {
 
     await this.ethnicService.create(param);
 
-    return ResponseClient.base('POST');
+    return this.response.base('POST');
   }
 }

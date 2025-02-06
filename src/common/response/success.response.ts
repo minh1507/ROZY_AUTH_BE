@@ -1,7 +1,12 @@
 import { Trans } from '../trans/trans';
+import { LoggerService } from '../../module/share/logger/logger.service';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ResponseClient {
-  static base = (
+  constructor(private readonly logger: LoggerService) {}
+
+  base = (
     method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
     data: object | object[] | null = null,
     flag: boolean = true,
@@ -17,6 +22,9 @@ export class ResponseClient {
       data: data,
       ui: {
         flag: method == 'GET' ? false : flag,
+      },
+      trace: {
+        id: this.logger.getTraceId(),
       },
     };
   };

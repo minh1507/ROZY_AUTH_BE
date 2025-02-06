@@ -24,9 +24,6 @@ export class LoggingInterceptor implements NestInterceptor {
       tap((data) => {
         if (data && typeof data === 'object') {
           data.message = this.getMessage(data.message, lang);
-          data.trace = {
-            id: traceId,
-          };
         }
       }),
     );
