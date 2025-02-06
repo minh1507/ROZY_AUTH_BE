@@ -34,9 +34,13 @@ export class LoggerService extends Logger {
     consola.error(formattedMessage);
   }
 
-  trace(message: string) {
+  trace(
+    message: string,
+    type: null | 'REPOSITORY' | 'CONTROLLER' | 'SERVICE' = null,
+  ) {
     const traceId = this.getTraceId();
-    const formattedMessage = `[${traceId}] ${message}`;
+    const formattedMessage =
+      `[${traceId}]` + type ? `[${type}]` : `` + ` ${message}`;
 
     consola.log(formattedMessage);
   }

@@ -5,7 +5,6 @@ import { Ethnic } from './ethnic.entity';
 import { CreateEthnicDto, FindDto } from './ethnic.dto';
 import { PaginationResult } from 'src/module/v1/base/dto.base';
 import { CustomBadRequestException } from 'src/common/exeption/bad-request.exeption';
-
 @Injectable()
 export class EthnicService {
   constructor(
@@ -34,7 +33,11 @@ export class EthnicService {
     const result = await this.ethnicRepository.create(param);
 
     this.logger.trace(
-      `[SERVICE] Create ethnic with id=${result.id} sucessfully`,
+      `[SERVICE] Create ethnic with id=${result.id} successfully`,
     );
+  };
+
+  public master = async (): Promise<void> => {
+    this.logger.trace(`[SERVICE] Start find all ethnics`);
   };
 }

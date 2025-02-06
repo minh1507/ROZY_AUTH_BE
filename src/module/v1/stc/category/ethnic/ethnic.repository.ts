@@ -29,20 +29,16 @@ export class EthnicRepository {
   public create = async (param: CreateEthnicDto): Promise<Ethnic> => {
     this.logger.trace('[REPOSITORY] Start create ethnic');
 
-    const query = this.repository.save(param);
-
-    return query;
+    return this.repository.save(param);
   };
 
   public exist = async (code: string): Promise<boolean> => {
     this.logger.trace('[REPOSITORY] Start check exist ethnic');
 
-    const isExist = await this.repository.exists({
+    return await this.repository.exists({
       where: {
         code: code,
       },
     });
-
-    return isExist;
   };
 }
