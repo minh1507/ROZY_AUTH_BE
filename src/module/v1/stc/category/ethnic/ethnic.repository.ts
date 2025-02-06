@@ -15,7 +15,7 @@ export class EthnicRepository {
   ) {}
 
   public find = async (param: FindDto): Promise<PaginationResult<Ethnic>> => {
-    this.logger.trace('[REPOSITORY] Start find all ethnics');
+    this.logger.trace('Start find all ethnics', 'REPOSITORY');
 
     const query = this.repository
       .createQueryBuilder('ethnic')
@@ -27,13 +27,13 @@ export class EthnicRepository {
   };
 
   public create = async (param: CreateEthnicDto): Promise<Ethnic> => {
-    this.logger.trace('[REPOSITORY] Start create ethnic');
+    this.logger.trace('Start create ethnic', 'REPOSITORY');
 
     return this.repository.save(param);
   };
 
   public exist = async (code: string): Promise<boolean> => {
-    this.logger.trace('[REPOSITORY] Start check exist ethnic');
+    this.logger.trace('Start check exist ethnic', 'REPOSITORY');
 
     return await this.repository.exists({
       where: {

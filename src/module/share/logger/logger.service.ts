@@ -27,21 +27,40 @@ export class LoggerService extends Logger {
     return this.traceIdService.getTraceId();
   }
 
-  error(message: string) {
-    const traceId = this.getTraceId();
-    const formattedMessage = `[${traceId}] ${message}`;
+  badRequest(message: string, type: null | 'EXCEPTION' = null) {
+    import('chalk')
+      .then((chalkModule) => {
+        const chalk = chalkModule.default;
+        const traceId = this.getTraceId();
+        const formattedMessage =
+          `[${traceId}]` + (type ? `[${type}]` : ``) + `[400]` + ` ${message}`;
 
-    consola.error(formattedMessage);
+        const styledMessage = chalk.red(formattedMessage);
+        consola.log(styledMessage);
+      })
+      .catch((err) => {
+        // Handle any errors that might occur during the import
+        consola.error('Failed to load chalk:', err);
+      });
   }
 
   trace(
     message: string,
     type: null | 'REPOSITORY' | 'CONTROLLER' | 'SERVICE' = null,
   ) {
-    const traceId = this.getTraceId();
-    const formattedMessage =
-      `[${traceId}]` + type ? `[${type}]` : `` + ` ${message}`;
+    import('chalk')
+      .then((chalkModule) => {
+        const chalk = chalkModule.default;
+        const traceId = this.getTraceId();
+        const formattedMessage =
+          `[${traceId}]` + (type ? `[${type}]` : ``) + ` ${message}`;
 
-    consola.log(formattedMessage);
+        const styledMessage = chalk.cyan(formattedMessage);
+        consola.log(styledMessage);
+      })
+      .catch((err) => {
+        // Handle any errors that might occur during the import
+        consola.error('Failed to load chalk:', err);
+      });
   }
 }

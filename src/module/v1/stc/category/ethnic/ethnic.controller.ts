@@ -19,7 +19,8 @@ export class EthnicController {
   @Get()
   public async find(@Query() param: FindDto) {
     this.logger.trace(
-      `[CONTROLLER] Start find all ethnics with param: ${JSON.stringify(param)}`,
+      `Start find all ethnics with param: ${JSON.stringify(param)}`,
+      'CONTROLLER',
     );
 
     const result = await this.ethnicService.find(param);
@@ -33,7 +34,8 @@ export class EthnicController {
     @Req() req: IRequestWithLang,
   ) {
     this.logger.trace(
-      `[CONTROLLER] Start creat ethnic with param: ${JSON.stringify(param)}`,
+      `Start creat ethnic with param: ${JSON.stringify(param)}`,
+      'CONTROLLER',
     );
 
     console.log(req.lang);
@@ -41,12 +43,5 @@ export class EthnicController {
     await this.ethnicService.create(param);
 
     return ResponseClient.base('POST');
-  }
-
-  @Get('master')
-  public async master() {
-    await this.ethnicService.master();
-
-    return ResponseClient.base('GET', {});
   }
 }

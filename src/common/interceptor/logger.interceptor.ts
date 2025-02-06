@@ -1,8 +1,8 @@
 import {
+  CallHandler,
+  ExecutionContext,
   Injectable,
   NestInterceptor,
-  ExecutionContext,
-  CallHandler,
 } from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 import { TraceIdService } from 'src/module/share/trace/trace.service';
@@ -23,10 +23,10 @@ export class LoggingInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap((data) => {
         if (data && typeof data === 'object') {
-          (data.message = this.getMessage(data.message, lang)),
-            (data.trace = {
-              id: traceId,
-            });
+          data.message = this.getMessage(data.message, lang);
+          data.trace = {
+            id: traceId,
+          };
         }
       }),
     );
